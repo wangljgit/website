@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}
+<title>error</title>
+{% end %}
+{% block body %}
+<body class="page-body page-error-env">
+
+	<div class="page-error centered">
+		
+		<div class="error-symbol">
+			<i class="fa-warning"></i>
+		</div>
+		
+		<h2>
+			Error 404
+			<small>Page not found!</small>
+		</h2>
+		
+		<p>We did not find the page you were looking for!</p>
+		<p>You can search again or contact one of our agents to help you!</p>
+		
+	</div>
+
+
+
+	<!-- Bottom Scripts -->
+	<script src="/static/js/bootstrap.min.js"></script>
+	<script src="/static/js/TweenMax.min.js"></script>
+	<script src="/static/js/resizeable.js"></script>
+	<script src="/static/js/joinable.js"></script>
+	<script src="/static/js/xenon-api.js"></script>
+	<script src="/static/js/xenon-toggles.js"></script>
+
+
+	<!-- JavaScripts initializations and stuff -->
+	<script src="/static/js/xenon-custom.js"></script>
+
+</body>
+{% end %}

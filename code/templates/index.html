@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+{% block title %}
+DNS数据捕获与分析
+{% end %}
+{% block css %}
+<link href="/static/js/plugins/cirque/cirque.css" rel="stylesheet" />
+<link href='/static/css/calendar/glDatePicker.default.css' rel="stylesheet" type="text/css">
+<!-- <link rel="stylesheet" type="text/css" href="/static/css/calendar/my.css"> -->
+
+<style>
+.chart-holder {
+	height: 325px;
+}
+	
+.cirque-stats {
+	text-align: center;
+}
+	
+.cirque-stats .cirque-container {	
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;	
+	margin-right: 2em;
+	margin-left: 2em;
+}
+</style>
+{% end%}
+{% block body %}
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+	
+	<div class="navbar-inner">
+		
+		<div class="container">
+			
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<i class="icon-cog"></i>
+			</a>
+			
+			<a class="brand" href="/">
+				数据流捕获与分析系统设计与实现			
+			</a>
+	
+		</div> <!-- /container -->
+		
+	</div> <!-- /navbar-inner -->
+	
+</div> <!-- /navbar -->
+    
+<div class="subnavbar">
+
+	<div class="subnavbar-inner">
+	
+		<div class="container">
+
+			<a class="btn-subnavbar collapsed" data-toggle="collapse" data-target=".subnav-collapse">
+				<i class="icon-reorder"></i>
+			</a>
+
+			<div class="subnav-collapse collapse">
+				<ul class="mainnav">
+				
+					<li class="active">
+						<a href="/">
+							<i class="icon-home"></i>
+							<span>首页</span>
+						</a>	    				
+					</li>
+					
+					<li class="dropdown">					
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-th"></i>
+							<span>统计结果查询</span>
+							<b class="caret"></b>
+						</a>
+					
+						<ul class="dropdown-menu">
+							<li><a href="./elements.html">Elements</a></li>
+							<li><a href="./validation.html">Validation</a></li>
+							<li><a href="./jqueryui.html">jQuery UI</a></li>
+							<li><a href="./charts.html">Charts</a></li>
+							<li><a href="./popups.html">Popups/Notifications</a></li>
+						</ul>			
+					</li>
+					
+					<li class="dropdown">					
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-copy"></i>
+							<span>网页分类</span>
+							<b class="caret"></b>
+						</a>				
+					</li>
+					
+					<li class="dropdown">					
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-external-link"></i>
+							<span>Extra Pages</span>
+							<b class="caret"></b>
+						</a>	
+					
+						<ul class="dropdown-menu">
+							<li><a href="./login.html">Login</a></li>
+							<li><a href="./signup.html">Signup</a></li>
+							<li><a href="./error.html">Error</a></li>
+							<li class="dropdown-submenu">
+			                  <a tabindex="-1" href="#">Dropdown menu</a>
+			                  <ul class="dropdown-menu">
+			                    <li><a tabindex="-1" href="#">Second level link</a></li>
+			                    <li><a tabindex="-1" href="#">Second level link</a></li>
+			                    <li><a tabindex="-1" href="#">Second level link</a></li>
+			                  </ul>
+			                </li>
+						</ul>    				
+					</li>
+				
+				</ul>
+			</div> <!-- /.subnav-collapse -->
+
+		</div> <!-- /container -->
+	
+	</div> <!-- /subnavbar-inner -->
+
+</div> <!-- /subnavbar -->
+    
+    
+<div class="main">
+	
+	<div class="container">
+
+		<div class="row">
+
+			<div class="span12">
+			
+				<div class="widget stacked">
+					
+					<div class="widget-header">
+						<i class="icon-bar-chart"></i>
+						<h3>请求及应答变化</h3>
+						<!-- <select id="queryresponse" name="queryresponse" style="margin-left:20px; margin-top:6px;">
+							<option value="hour" selected="selected">小时变化</option>
+							<option value="day">一天</option>
+							<option value="week">一周</option>
+							<option value="month">每月变化</option>
+						</select> -->
+						<input type="text" id="queryresponsedate" style="margin-top:6px;" />
+						<input type="button" value="查询" onClick="queryresponse()" style="margin-left:10px;"></input>
+						<!-- <input type="button" value="模糊查询查询" onClick="searchfuzz()"></input> -->
+						
+					</div> <!-- /widget-header -->
+					
+					<div class="widget-content">
+					
+						<div id="line-chart-query-response" class="chart-holder"></div> <!-- /line-chart -->
+					
+					</div> <!-- /widget-content -->
+				
+				</div> <!-- /widget -->				
+			
+			</div> <!-- /span12 -->
+		
+		
+		</div> <!-- /row -->
+
+	
+		<div class="row">
+
+			<div class="span12">
+			
+				<div class="widget stacked">
+					
+					<div class="widget-header">
+						<i class="icon-bar-chart"></i>
+						<h3>域名访问统计</h3>
+						<input id="querydomain" type="text" value="输入查询域名" style="margin-left:10px;margin-top:6px;" />
+						<select id="choosedomain" name="choosedomain" style="margin-left:20px; margin-top:6px;">
+							<option value="hour" selected="selected">小时变化</option>
+							<option value="day">一天</option>
+							<option value="week">一周</option>
+							<option value="month">每月变化</option>
+						</select>
+						<input type="button" value="精确查询" onClick="searchdomain('no')" style="margin-left:10px;"></input>
+						<input type="button" value="模糊查询查询" onClick="searchdomain('yes')"></input>
+						<!-- <input type="button" value="模糊查询查询" onClick="searchfuzz()"></input> -->
+						
+					</div> <!-- /widget-header -->
+					
+					<div class="widget-content">
+					
+						<div id="line-chart" class="chart-holder"></div> <!-- /line-chart -->
+					
+					</div> <!-- /widget-content -->
+				
+				</div> <!-- /widget -->				
+			
+			</div> <!-- /span12 -->
+		
+		
+		</div> <!-- /row -->
+
+		<div class="row">
+
+			<div class="span12">
+			
+				<div class="widget stacked">
+					
+					<div class="widget-header">
+						<i class="icon-bar-chart"></i>
+						<h3>IP访问统计</h3>
+						<input id="queryip" type="text" value="输入查询IP" style="margin-left:10px;margin-top:6px;" />
+						<select id="iptype" name="iptype" style="margin-left:20px; margin-top:6px;">
+							<option value="src" selected="selected">源IP</option>
+							<option value="dst">目的</option>
+						</select>
+						<select id="chooseip" name="chooseip" style="margin-left:20px; margin-top:6px;">
+							<option value="hour" selected="selected">小时变化</option>
+							<option value="day">一天</option>
+							<option value="week">一周</option>
+							<option value="month">每月变化</option>
+						</select>
+						<input type="button" value="查询" onClick="searchip()" style="margin-left:10px;"></input>
+					</div> <!-- /widget-header -->
+					
+					<div class="widget-content">
+					
+						<div id="line-chart-ip" class="chart-holder"></div> <!-- /line-chart -->
+					
+					</div> <!-- /widget-content -->
+				
+				</div> <!-- /widget -->				
+			
+			</div> <!-- /span12 -->
+		
+		
+		</div> <!-- /row -->
+	
+	
+	</div> <!-- /container -->
+    
+</div> <!-- /main -->
+
+    
+    
+<div class="footer">
+
+	<div class="container">
+		
+		<div class="row">
+			
+			<div id="footer-terms" class="span6">
+				<span style="Times, TimesNR, 'New Century Schoolbook', Georgia, 'New York', serif;">版权所有 汪林杰</span>
+			</div> <!-- /.span6 -->
+			
+		</div> <!-- /row -->
+		
+	</div> <!-- /container -->
+	
+</div> <!-- /footer -->
+    
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+  </body>
+{% end %}
+{% block script %}
+<script src="/static/js/plugins/cirque/cirque.js"></script>
+<script src="/static/js/plugins/flot/jquery.flot.js"></script>
+<script src="/static/js/plugins/flot/jquery.flot.pie.js"></script>
+<script src="/static/js/plugins/flot/jquery.flot.orderBars.js"></script>
+<script src="/static/js/plugins/flot/jquery.flot.resize.js"></script>
+
+<!-- <script src="/static/js/charts/bar.js"></script>
+<script src="/static/js/charts/donut.js"></script> -->
+<!--<script src="/static/js/charts/line.js"></script> -->
+<script src="/static/js/charts/handler.js"></script>
+<!-- <script src="/static/js/charts/pie.js"></script>
+<script src="/static/js/charts/area.js"></script> -->
+<script type="text/javascript" src="/static/js/plugins/calendar/my.js"></script>
+<!--<script id="jquery_183" type="text/javascript" class="library" src="/static/js/plugins/calendar/jquery-1.8.3.min.js"></script> -->
+<script src='/static/js/plugins/calendar/glDatePicker.min.js'></script>
+{% end %}
