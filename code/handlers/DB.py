@@ -3,7 +3,7 @@
 import logging
 import MySQLdb
 class DB:
-	def __init__(self, ip="172.26.253.30", username="root", pwd="nislab", database="test"):
+	def __init__(self, ip="", username="", pwd="", database=""):
 		try:
 			self.conn = MySQLdb.connect(host=ip,user=username,passwd=pwd, charset='utf8')
 		except:
