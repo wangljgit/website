@@ -171,12 +171,13 @@ DNS数据捕获与分析
 						<i class="icon-bar-chart"></i>
 						<h3>域名访问统计</h3>
 						<input id="querydomain" type="text" value="输入查询域名" style="margin-left:10px;margin-top:6px;" />
-						<select id="choosedomain" name="choosedomain" style="margin-left:20px; margin-top:6px;">
+						<!-- <select id="choosedomain" name="choosedomain" style="margin-left:20px; margin-top:6px;">
 							<option value="hour" selected="selected">小时变化</option>
 							<option value="day">一天</option>
 							<option value="week">一周</option>
 							<option value="month">每月变化</option>
-						</select>
+						</select> -->
+						<input type="text" id="choosedomaindate" style="margin-top:6px;" />
 						<input type="button" value="精确查询" onClick="searchdomain('no')" style="margin-left:10px;"></input>
 						<input type="button" value="模糊查询查询" onClick="searchdomain('yes')"></input>
 						<!-- <input type="button" value="模糊查询查询" onClick="searchfuzz()"></input> -->
@@ -210,12 +211,13 @@ DNS数据捕获与分析
 							<option value="src" selected="selected">源IP</option>
 							<option value="dst">目的</option>
 						</select>
-						<select id="chooseip" name="chooseip" style="margin-left:20px; margin-top:6px;">
+						<!-- <select id="chooseip" name="chooseip" style="margin-left:20px; margin-top:6px;">
 							<option value="hour" selected="selected">小时变化</option>
 							<option value="day">一天</option>
 							<option value="week">一周</option>
 							<option value="month">每月变化</option>
-						</select>
+						</select> -->
+						<input type="text" id="chooseipdate" style="margin-top:6px;"/>
 						<input type="button" value="查询" onClick="searchip()" style="margin-left:10px;"></input>
 					</div> <!-- /widget-header -->
 					

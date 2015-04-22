@@ -1,6 +1,6 @@
 function searchdomain(fuzz){
 	var domainname = $("#querydomain").val();
-	var choose = $("#choosedomain").val();
+	var date = $("#choosedomaindate").val();
 	if (domainname == "输入查询域名") {
 		domainname = "www.baidu.com";
 	};
@@ -16,7 +16,7 @@ function searchdomain(fuzz){
 	$.get(getpath,
 	{
 		"domainname":domainname,
-		"choose":choose
+		"date":date
 	},
 	function(data, status){
 		if (status=="success") {
@@ -101,11 +101,12 @@ function searchip(){
 	var queryip = $("#queryip").val();
 	var iptype = $("#iptype").val()
 	//alert(iptype);
-	var choose = $("#chooseip").val();
+	var date = $("#chooseipdate").val();
 	if (queryip == "输入查询IP") {
 		alert("请输入查询IP");
 		return;
 	};
+	
 	var showdata = [];
 	var max = 0;
 	var getpath;
@@ -113,8 +114,8 @@ function searchip(){
 	$.get(getpath,
 	{
 		"queryip":queryip,
-		"choose":choose,
-		"iptype":iptype
+		"iptype":iptype,
+		"date":date
 	},
 	function(data, status){
 		if (status=="success") {

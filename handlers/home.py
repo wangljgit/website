@@ -59,7 +59,7 @@ class HomeHandler(tornado.web.RequestHandler):
 	def get(self):
 		self.render("index.html")
 
-def getTime(domainname, fuzz=0, table="1querydomain"):
+def getTime(domainname, fuzz=0, table="1querydomain", date="20150422"):
 	gettime = GetTime()
 	db = DB()
 	# timestamp = time.time()
@@ -68,15 +68,13 @@ def getTime(domainname, fuzz=0, table="1querydomain"):
 	querystring = ""
 
 	tm_year, tm_mon, tm_mday, tm_hour = gettime.getNowTime()
-
-	# tm_year = localtime[0]
-	# tm_mon = localtime[1]
-	# tm_mday = localtime[2]
-	# tm_hour = localtime[3]
-	#logging.info("now time is %d" % tm_hour)
+	today = "%d%02d%02d" % (tm_year, tm_mon, tm_mday)
+	if today != date:
+		tm_hour = 24
 	for i in range(tm_hour):
 		#tm_year, tm_mon, tm_mday, tm_hour = gettime.getHour(tm_year, tm_mon, tm_mday, tm_hour)
-		timestring = "select number from %d%02d%02d%02d" % (tm_year, tm_mon, tm_mday, i)
+		#hourstring = 
+		timestring = "select number from " + date + ("%02d" % ( i))
 		if fuzz:
 			#querystring = "select number from %d%02d%02d%02d1querydomain where name like '%%%s'" % (tm_year, tm_mon, tm_mday, i, domainname)
 			tempstring = " where name like '%%%s'" % (domainname)
@@ -113,8 +111,9 @@ def getTime(domainname, fuzz=0, table="1querydomain"):
 class LineChartSearchHandler(tornado.web.RequestHandler):
 	def get(self):
 		domainname = self.get_argument('domainname', 'nodomain')
+		date = self.get_argument("date")
 		#result = self.db.db.query("select * from 20150420181querydomain where name=%s;", domainname)
-		result = getTime(domainname, 0, "1querydomain")
+		result = getTime(domainname, 0, "1querydomain", date)
 		if result:
 			self.write(json.dumps(result))
 			self.finish()
@@ -152,8 +151,9 @@ class LineChartSearchFuzzHandler(tornado.web.RequestHandler):
 		
 	def get(self):
 		domainname = self.get_argument('domainname', 'nodomain')
+		date = self.get_argument('date')
 		#result = self.db.db.query("select * from 20150420181querydomain where name=%s;", domainname)
-		result = getTime(domainname, 1, "1querydomain")
+		result = getTime(domainname, 1, "1querydomain", date)
 		if result:
 			self.write(json.dumps(result))
 			self.finish()
@@ -165,12 +165,13 @@ class LineChartSearchIPHandler(tornado.web.RequestHandler):
 	def get(self):
 		queryip = self.get_argument('queryip', '127.0.0.1')
 		iptype = self.get_argument('iptype', 'src')
+		date = self.get_argument("date")
 		if iptype=="src":
 			table = "1srcip"
 		else :
 			table = "1dstip"
 		#result = self.db.db.query("select * from 20150420181querydomain where name=%s;", domainname)
-		result = getTime(queryip, 0, table)
+		result = getTime(queryip, 0, table, date)
 		if result:
 			self.write(json.dumps(result))
 			self.finish()
